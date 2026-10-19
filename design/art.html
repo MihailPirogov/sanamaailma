@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../css/fonts.css"><style>
+html,body{margin:0;background:transparent}
+#c{position:relative;overflow:hidden;font-family:Manrope,"Segoe UI",Roboto,Arial,sans-serif;color:#f4f8fb}
+#c .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+#c .sh{position:absolute;inset:0}
+.t{position:absolute;font-family:Unbounded,Manrope,sans-serif;font-weight:800;letter-spacing:.5px;text-shadow:0 3px 0 #0b2545,0 8px 26px rgba(0,0,0,.55)}
+.s{position:absolute;font-weight:800;color:#cfe8f5;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.ic{position:absolute;border-radius:22%;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.grid{position:absolute;display:grid;gap:7px;padding:14px;border-radius:18px;background:rgba(11,37,69,.45);backdrop-filter:blur(8px);box-shadow:0 0 0 2px rgba(244,248,251,.9)}
+.cl{display:flex;align-items:center;justify-content:center;font-family:Unbounded,Manrope,sans-serif;font-weight:800;border-radius:14px}
+.cl.f{background:linear-gradient(180deg,#ffffff,#e3eef6);color:#0b2545;box-shadow:0 3px 0 #9fbdd3}
+.cl.e{background:rgba(11,37,69,.35);box-shadow:inset 0 0 0 2px rgba(244,248,251,.92)}
+.cl.n{background:transparent}
+.band{position:absolute;height:10px;background:repeating-linear-gradient(90deg,#f4f8fb 0 6px,transparent 6px 12px);opacity:.85}
+</style></head><body><div id="c"></div><script>
+// crossword: SAUNA / UNI (Finnish words: «сауна», «сон»)
+function grid(x,y,cell,font){
+ const rows=[['S','A','U','N','A'],['','','N','',''],['','','I','','']];
+ const st=[['f','f','f','f','f'],['n','n','f','n','n'],['n','n','e','n','n']];
+ let h=`<div class="grid" style="left:${x}px;top:${y}px;grid-template-columns:repeat(5,${cell}px);grid-auto-rows:${cell}px">`;
+ rows.forEach((r,i)=>r.forEach((ch,j)=>{const s=st[i][j];h+=`<div class="cl ${s}" style="font-size:${font}px">${s==='f'?ch:''}</div>`}));
+ return h+'</div>';
+}
+const BG='../img/bg/ch16_l.webp', T='Sanamaailma';
+function side(w,h,k,yo=0){ // text block on the left, crossword on the right
+ const s=w/1024;
+ return `<div class="bg" style="background-image:url(${BG})"></div>
+  <div class="sh" style="background:linear-gradient(90deg,rgba(6,20,40,.88) 0,rgba(6,20,40,.6) 45%,rgba(6,20,40,.05) 80%)"></div>
+  <img class="ic" src="../img/icon.png" style="left:${56*s}px;top:${(k==='og'?80:66)*s+yo}px;width:${150*s}px;height:${150*s}px">
+  <div class="t" style="left:${56*s}px;top:${(k==='og'?270:240)*s+yo}px;font-size:${56*s}px">${T}</div>
+  <div class="s" style="left:${58*s}px;top:${(k==='og'?370:340)*s+yo}px;font-size:${30*s}px">Мир финских слов</div>
+  <div class="s" style="left:${58*s}px;top:${(k==='og'?418:388)*s+yo}px;font-size:${23*s}px;color:#fff">Игра в слова на финском языке</div>
+  <div class="band" style="left:${58*s}px;top:${(k==='og'?462:432)*s+yo}px;width:${260*s}px;height:${8*s}px"></div>
+  ${grid(655*s,(k==="og"?200:150)*s+yo,60*s,34*s)}`;
+}
+function render(k){
+ const c=document.getElementById('c');
+ const S={feature:[1024,500],banner:[1920,1080],og:[1200,630],cover:[800,470],showcase:[1560,520]}[k];
+ c.style.width=S[0]+'px';c.style.height=S[1]+'px';
+ if(k==='cover'){
+  c.innerHTML=`<div class="bg" style="background-image:url(${BG})"></div>
+  <div class="sh" style="background:linear-gradient(180deg,rgba(6,20,40,.2),rgba(6,20,40,.8))"></div>
+  <img class="ic" src="../img/icon.png" style="left:330px;top:40px;width:140px;height:140px">
+  <div class="t" style="left:0;right:0;text-align:center;top:208px;font-size:62px">${T}</div>
+  <div class="s" style="left:0;right:0;text-align:center;top:300px;font-size:28px">Мир финских слов</div>
+  <div class="s" style="left:0;right:0;text-align:center;top:346px;font-size:23px;color:#fff">Собирайте слова из букв · 1000 уровней</div>`;
+ } else if(k==='banner'){ c.innerHTML=side(1920,1080,'feature',(1080-1920*500/1024)/2);
+ } else if(k==='showcase'){ c.innerHTML=side(1024,500,'feature',10).replace('left:655px;top:160px','left:1120px;top:150px').replace('rgba(6,20,40,.6) 45%','rgba(6,20,40,.45) 35%');
+ } else c.innerHTML=side(S[0],S[1],k);
+ return S;
+}
+</script></body></html>
