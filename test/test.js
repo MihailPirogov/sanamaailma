@@ -19,7 +19,7 @@ let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); 
   await page.goto(url); await page.evaluate(() => localStorage.clear()); await page.reload(); await sleep(900);
   ok(await page.evaluate(() => sanamaailma.tutVisible() && sanamaailma.tutStep === 'play'), 'first launch shows the tutorial (full flow: test_tutorial.js)');
   await page.click('#tutSkip'); await sleep(200);
-  if (process.env.URL) { const meta = await page.evaluate(() => ({ robots: (document.querySelector('meta[name=robots]') || {}).content, badge: (document.getElementById('testBadge') || {}).textContent })); ok(/noindex/.test(meta.robots || '') && meta.badge === 'тестовая версия', 'live: noindex + test badge'); }
+  if (process.env.URL) { const meta = await page.evaluate(() => ({ robots: (document.querySelector('meta[name=robots]') || {}).content, badge: (document.getElementById('testBadge') || {}).textContent, canonical: (document.querySelector('link[rel=canonical]') || {}).href, og: (document.querySelector('meta[property="og:image"]') || {}).content })); if (process.env.TEST_MODE) ok(/noindex/.test(meta.robots || '') && meta.badge === 'тестовая версия', 'live (test mode): noindex + test badge'); else ok(!/noindex/.test(meta.robots || '') && meta.badge === undefined && meta.canonical === 'https://pirogovlab.ru/sanamaailma/' && !!meta.og, 'live (public): indexable, no test badge, canonical + og'); }
 
   // ---- data validation
   const v = await page.evaluate(() => {
