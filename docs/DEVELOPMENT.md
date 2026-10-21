@@ -24,3 +24,8 @@
   - `tools/build_android.sh debug` → `release/sanamaailma-debug.apk` (WebView + Yandex Mobile Ads 8.6.0), тест `node test_android_www.js`;
   - ID рекламных блоков — только в `android/app/src/main/res/values/ads.xml` (приложение РСЯ 20244945: R-M-20244945-1/2/3, в тестовом режиме до добавления ссылки на магазин; debug/signtest — демо-блоки);
   - чек-листы: `release/ANDROID_CHECKLIST.md`, `release/YANDEX_CHECKLIST.md`, тексты `release/store/TEXTS_ru.md`.
+
+## Web ads (public site build only)
+`tools/stage_public.sh` adds `js/webads_config.js` + `js/adapters/web.js` (Yandex.RTB loader `yandex.ru/ads/system/context.js`, `yaContextCb`, `Ya.Context.AdvManager.render`):
+sticky banner (`renderTo`), interstitial (`type: 'fullscreen'`), and rewards via a SEPARATE fullscreen block (RSYa web has no rewarded format; reward only if it was shown).
+Show points/caps are the shared ones in `js/app.js`. Placeholder IDs = ads off. Yandex Games / Android builds never include these files (guard in `tools/build_release.py`). Test: `node test/test_webads.js` (mocked Ya.Context).

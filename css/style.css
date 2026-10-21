@@ -261,6 +261,7 @@ body.spinning .spinDisk .bulb.b1,body.spinning .spinDisk .bulb.b2{animation-dura
 .adSim button{position:absolute;right:6px;top:4px;font-size:18px;color:#555}
 #adSimBanner{position:fixed;left:0;right:0;bottom:0;height:50px;z-index:30;background:repeating-linear-gradient(45deg,#ececec 0 12px,#dcdcdc 12px 24px);color:#555;font:700 13px/50px system-ui,sans-serif;text-align:center}
 html.withBanner #app{height:calc(100% - 50px)}
+#webAdBanner{position:fixed;left:0;right:0;bottom:0;height:50px;z-index:30;overflow:hidden;display:flex;justify-content:center;align-items:center;background:rgba(0,0,0,.25)}
 /* ---- phone landscape (low height): two columns so nothing overlaps or falls off-screen */
 @media (orientation:landscape) and (max-height:540px){
   #app{max-width:940px}

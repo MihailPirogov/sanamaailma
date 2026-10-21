@@ -204,7 +204,7 @@ let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); 
     await dctx.close();
   }
   // ---- this build has no platform adapters / ad SDKs
-  ok(await page.evaluate(() => Platform.name === 'web' && !window.YaGames && !document.querySelector('script[src*=adapters]')), 'plain web build, no ad SDK / adapters');
+  ok(await page.evaluate(pub => Platform.name === 'web' && !window.YaGames && ![...document.querySelectorAll('script[src*=adapters]')].some(e => !(pub && /adapters\/web\.js/.test(e.src))) && !document.querySelector('script[src*="yandex.ru/ads"]'), !!process.env.URL), 'web build: no Games SDK, only the web ads adapter on the public site, no RSYa loader with empty IDs');
 
   await page.goto(url); await sleep(1500);
   ok(errors.length === 0, 'no JS errors ' + errors.slice(0, 5).join(' | '));

@@ -14,7 +14,7 @@ for d in ('css', 'data', 'img', 'audio', 'fonts'):
     if os.path.isdir(d): shutil.copytree(d, os.path.join(out, d))
 os.makedirs(os.path.join(out, 'js/adapters'))
 for f in os.listdir('js'):
-    if f.endswith('.js'): shutil.copy(os.path.join('js', f), os.path.join(out, 'js', f))
+    if f.endswith('.js') and f != 'webads_config.js': shutil.copy(os.path.join('js', f), os.path.join(out, 'js', f))
 shutil.copy(f'js/adapters/{target}.js', os.path.join(out, f'js/adapters/{target}.js'))
 shutil.copy('index.html', os.path.join(out, 'index.html'))
 
@@ -63,6 +63,7 @@ for dp, _, fs in os.walk(out):
                 u = m.group(0)
                 if 'w3.org' in u or u.startswith('https://yandex.ru/dev/games'): continue
                 bad.append(f'{p}: external ref {u}')
+if os.path.exists(os.path.join(out, 'js/adapters/web.js')) or os.path.exists(os.path.join(out, 'js/webads_config.js')): bad.append('web ads layer leaked into ' + target)
 s = open(os.path.join(out, 'js/app.js'), encoding='utf-8').read()
 if 'if (!window.RELEASE) window.sanamaailma' not in s: bad.append('app.js: test hooks not guarded')
 if bad:

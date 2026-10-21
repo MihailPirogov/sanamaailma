@@ -18,7 +18,13 @@ Test: `cd test && node test_release.js` (mock SDK) — ALL PASS.
 | Лидерборд | technical name **`levels`**, numeric, descending, «Пройдено уровней» |
 | Политика | https://pirogovlab.ru/sanamaailma/privacy/ (first upload the ads version `release/privacy_with_ads/index.html`) |
 
-Promo assets (icon 512, cover 800×470, screenshots, video) — not made yet. Texts: `release/store/TEXTS_ru.md`.
+Promo assets: see release/yandex_assets/ (icon 512, cover 800×470, showcase 1560×520, screenshots, video).
+- **Horizontal gameplay video (required):** `yandex_assets/gameplay_landscape.mp4`. It is git-ignored; regenerate it with the command below.
+  - 27.7 s, H.264 1920×1080 30 fps yuv420p + AAC 48 kHz stereo, 8.1 MB. Yandex limits: MP4, 16:9, height ≥400 px, ≤28 s, ≤100 MB. Contact sheet: `gameplay_landscape_contact_sheet.jpg`.
+  - Real gameplay recorded from the release build, with no browser UI and no ads: home → swipes on level 193 → word card → chapter map → daily puzzle → wheel of fortune. The swipe part is sped up 1.25×.
+  - The music is an original A-minor kantele-style melody synthesised by `tools/make_trailer.py` (numpy), with no third-party audio. No text overlays, no religious imagery.
+  - Re-record: `python3 tools/build_release.py yandex; Xvfb :99 -screen 0 1920x1080x24 & cd test && XGRAB=:99 node trailer_rec.js && python3 ../tools/make_trailer.py`.
+ Texts: `release/store/TEXTS_ru.md`.
 
 ## Before submitting
 1. `tools/scan_religion.py` → 0; backgrounds without churches/religious symbols.

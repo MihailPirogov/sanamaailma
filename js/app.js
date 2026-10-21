@@ -300,6 +300,8 @@
   function showCombo(n) { const c = $('combo'); c.textContent = T('combo') + ' ×' + n; c.classList.remove('show'); void c.offsetWidth; c.classList.add('show'); Sound.combo(n); }
   function updProg() { const lv = game.lv; $('gProg').style.width = (100 * lv.w.filter(x => game.found.has(x[0])).length / lv.w.length) + '%'; }
   function updJar(bump) { const n = st.jar % 10, full = st.jar >= 10; $('jarBadge').textContent = full ? '!' : n; $('jarRing').style.strokeDashoffset = 100.5 * (1 - (full ? 1 : n / 10)); if (bump) $('bJar').animate([{ transform: 'scale(1.25) rotate(-8deg)' }, { transform: 'none' }], { duration: 350 }); }
+  // web adapter (RSYa loader) reports late availability changes (loaded / blocked / no fill)
+  window.addEventListener('platform:ads', () => { try { updBanner(); if (screen === 'game') updHintBtns(); } catch (e) {} });
   function updHintBtns() { const f = $('freeBadge'); f.hidden = !st.freeHints; f.textContent = st.freeHints; $('bAd').hidden = !Platform.ads.rewardedAvailable(); }
 
   function openCells() { return game.lv.w.filter(x => !game.found.has(x[0])); }
