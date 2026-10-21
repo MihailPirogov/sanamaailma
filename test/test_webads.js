@@ -108,6 +108,10 @@ async function next(page) { await page.click('#wNext'); await sleep(700);
     ok(!ext.some(u => /yandex\.ru\/ads/.test(u)) && !s.banner && !s.rew && !s.inter && await page.isHidden('#bAd'), "empty-string IDs ('') -> no loader request, no ads");
     await winLevel(page); await next(page); ok(errors.length === 0, 'no JS errors, levels play ' + errors.join(' | ')); await ctx.close(); }
   { const c = fs.readFileSync(path.join(ROOT, 'js/webads_config.js'), 'utf8'); ok(/banner: ''/.test(c) && /interstitial: ''/.test(c) && /rewarded: ''/.test(c), 'shipped config has empty IDs (RSYa site not approved yet)'); }
+  // 5c) staged public build keeps the game folder out of the index
+  { const h = fs.readFileSync(path.join(DIR, 'index.html'), 'utf8'), pr = fs.readFileSync(path.join(DIR, 'privacy/index.html'), 'utf8');
+    ok(/<meta name="robots" content="noindex, follow">/.test(h) && (h.match(/name="robots"/g) || []).length === 1, 'dist_web/index.html: robots noindex, follow (once)');
+    ok(/content="index, follow"/.test(pr) && !/noindex/.test(pr), 'dist_web/privacy: indexable'); }
   // 6) other builds untouched
   for (const d of ['release/build/yandex', 'android/app/src/main/assets/www']) { const p = path.join(ROOT, d); if (!fs.existsSync(p)) { console.log('skip ' + d); continue; }
     const h = fs.readFileSync(path.join(p, 'index.html'), 'utf8');

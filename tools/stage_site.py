@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# NOTE (21.10.2026): one-shot generator, already applied. Live pages were since edited on the server (Google Play link, RSYa cookie note, «Как играть»); never re-upload its output — always patch the CURRENT server files.
 """Stage the public pages for «Sanamaailma» on pirogovlab.ru (ported from tatar-wow/tools/stage_site.py).
 Input: read-only copies of the live pages in site_stage/live/ (the «Сүз дөньясы» landing/blog post are used as templates only).
 Output: site_stage/out/ — new folders sanamaailma-igra/, en/sanamaailma-igra/, blog/DATE-sanamaailma/, en/blog/…, blog/media/sanamaailma*.{jpg,webp},
