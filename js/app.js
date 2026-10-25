@@ -187,7 +187,8 @@
     if (kind === 'daily') { $('gTitle').textContent = T('daily'); $('gSub').textContent = dayKey(); }
     else { const ch = chapterOf(id); $('gTitle').textContent = T('level') + ' ' + (id + 1); $('gSub').textContent = chapName(ch) + ' · ' + (id + 2 - ch.start) + '/' + (ch.end - ch.start + 1); }
     show('game');
-    requestAnimationFrame(() => { buildGrid(); buildWheel(true); updProg(); updJar(); updHintBtns(); });
+    requestAnimationFrame(() => { updHintBtns(); buildWheel(true); buildGrid();  // buttons + wheel first: the grid gets the height left over (small screens / native banner)
+      updProg(); updJar(); });
     // preload cards for this level
     new Set(game.lv.w.map(x => x[0].codePointAt(0))).forEach(k => loadChunk(String.fromCodePoint(k)));
   }
@@ -196,8 +197,10 @@
   function buildGrid() {
     const g = $('grid'), lv = game.lv; g.innerHTML = ''; game.cells = {};
     g.style.gridTemplateColumns = g.style.gridTemplateRows = '';      // measure the free space without the previous level's grid
-    const wr = $('gridWrap').getBoundingClientRect(), gap = 5, pad = 2 * 8 + 28;
-    const size = Math.max(20, Math.min(56, Math.floor(Math.min((wr.width - pad - (lv.c - 1) * gap) / lv.c, (wr.height - pad - (lv.r - 1) * gap) / lv.r))));
+    const wr = $('gridWrap').getBoundingClientRect(), pad = 2 * 8 + 28;
+    const fit = gap => Math.floor(Math.min((wr.width - pad - (lv.c - 1) * gap) / lv.c, (wr.height - pad - (lv.r - 1) * gap) / lv.r));
+    let gap = 5, size = fit(gap); if (size < 30) { gap = 3; size = fit(gap); }   // tight screens: thinner gaps before smaller cells
+    size = Math.max(14, Math.min(56, size)); g.style.gap = gap + 'px';
     g.style.gridTemplateColumns = `repeat(${lv.c}, ${size}px)`; g.style.gridTemplateRows = `repeat(${lv.r}, ${size}px)`;
     for (let r = 0; r < lv.r; r++) for (let c = 0; c < lv.c; c++) { const d = document.createElement('div'); d.className = 'cell'; d.style.fontSize = (size * .6) + 'px'; g.appendChild(d); game.cells[r + ',' + c] = { el: d, ch: null }; }
     lv.w.forEach(w => cellsOf(w).forEach(([r, c], i) => { const m = game.cells[r + ',' + c]; m.ch = w[0][i]; m.el.classList.add('on'); }));
@@ -231,10 +234,23 @@
   // wheel ornament: brief brighter pulse when a word is found (CSS-only animation, see .wheelOrn)
   function ornPulse() { const o = document.querySelector('#wheel .ornP'); if (!o) return; o.classList.remove('pulse'); void o.getBoundingClientRect(); o.classList.add('pulse'); }
   document.addEventListener('visibilitychange', () => document.body.classList.toggle('hiddenTab', document.hidden));
+  // portrait wheel size: never so big that the crossword (rows of >= 20px cells) no longer fits in the height left over
+  // (small phones, Android native banner below the WebView shrinks the viewport)
+  function portraitD() {
+    let D = Math.max(170, Math.min(innerWidth - 150, innerHeight * .34, 290));
+    const scr = $('scrGame'), gw = $('gridWrap'), bt = $('bottom'), lv = game.lv; if (!lv || !scr.clientHeight) return D;
+    const cs = getComputedStyle(scr), inner = scr.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    let others = 0; for (const el of scr.children) if (el !== gw && el !== bt && getComputedStyle(el).position !== 'absolute') others += el.offsetHeight;
+    const gwp = getComputedStyle(gw), wrapPad = parseFloat(gwp.paddingTop) + parseFloat(gwp.paddingBottom);
+    const needGrid = lv.r * 20 + (lv.r - 1) * 3 + 2 * 8 + 28 + wrapPad;
+    const room = inner - others - needGrid - 8 - 6;          // 8 = #bottom padding, 6 = knitted ring outside the wheel
+    if (room < D) D = Math.max(120, Math.floor(room));
+    return D;
+  }
   function buildWheel(anim) {
     const wh = $('wheel'); wh.querySelectorAll('.let').forEach(e => e.remove());
     const lowLand = innerWidth > innerHeight && innerHeight <= 540;  // phone landscape: wheel sits in the right column
-    const D = lowLand ? Math.max(150, Math.min(innerHeight - 180, 250)) : Math.max(170, Math.min(innerWidth - 150, innerHeight * .34, 290)); wh.style.width = wh.style.height = D + 'px'; game.R = D / 2;
+    const D = lowLand ? Math.max(150, Math.min(innerHeight - 180, 250)) : portraitD(); wh.style.width = wh.style.height = D + 'px'; game.R = D / 2;
     $('lines').setAttribute('viewBox', `0 0 ${D} ${D}`);
     const n = game.letters.length; game.letterEls = [];
     const rad = n <= 3 ? .52 : n <= 5 ? .64 : .7;
@@ -971,7 +987,7 @@
   window.addEventListener('resize', () => { tutKey = ''; tutFingerKey = ''; });
 
   /* ================= INIT ================= */
-  window.addEventListener('resize', () => { if (screen === 'game' && game.lv) { buildGrid(); buildWheel(false); } });
+  window.addEventListener('resize', () => { if (screen === 'game' && game.lv) { buildWheel(false); buildGrid(); } });
   Platform.onPause(() => save());
   document.querySelector('.logo-orn').style.backgroundImage = Art.ornament('#cfe8f3', '#ff8c42', 18);
   // Nordic UI decoration: knit band, frosted wheel crystal, line icons (all generated SVG, js/art.js)

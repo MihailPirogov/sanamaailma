@@ -493,3 +493,17 @@ body.photoBg #scrGame .ttl,body.photoBg #scrMap h2,body.photoBg #scrHome .logo{t
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));
   box-shadow:0 0 0 1px rgba(11,37,69,.5);opacity:.95}
 #wheel{isolation:isolate}
+
+/* small screens / Android native banner below the WebView: the bottom block never overlaps the word pill,
+   the pill stays above the grid, the grid takes only the height left over (sized in buildGrid after buildWheel) */
+#preview{position:relative;z-index:6;flex:0 0 auto}
+#bottom{flex:0 0 auto;min-height:calc(2*52px + 20px + 22px)}
+#bottom:has(#bAd:not([hidden])){min-height:calc(3*52px + 2*20px + 22px)}
+#gridWrap{overflow:visible}
+@media (max-height:640px) and (orientation:portrait){
+  #preview{height:40px}#preview span{font-size:22px;padding:3px 14px}
+  .side{gap:10px;bottom:8px}.gbtn{width:44px;height:44px}.gbtn .ico{width:20px;height:20px}
+  #bottom{min-height:calc(2*44px + 10px + 14px)}
+  #bottom:has(#bAd:not([hidden])){min-height:calc(3*44px + 2*10px + 14px)}
+}
+@media (max-height:640px) and (orientation:portrait){#gridWrap{padding:4px 0}}
