@@ -8,6 +8,7 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/code-MIT-informational" alt="MIT"></a>
 <img src="https://img.shields.io/badge/data-CC%20BY--SA%204.0-lightgrey" alt="CC BY-SA 4.0">
 <a href="https://play.google.com/store/apps/details?id=ru.pirogovlab.sanamaailma"><img src="https://img.shields.io/badge/Google%20Play-Sanamaailma-414141?logo=googleplay&logoColor=white" alt="Google Play"></a>
+<a href="https://www.rustore.ru/catalog/app/ru.pirogovlab.sanamaailma"><img src="https://img.shields.io/badge/RuStore-Sanamaailma-0077ff?logo=android&logoColor=white" alt="RuStore"></a>
 <a href="https://pirogovlab.ru/sanamaailma-igra/"><img src="https://img.shields.io/badge/site-pirogovlab.ru-0b2545" alt="site"></a>
 </p>
 
@@ -17,8 +18,9 @@
 
 Словесная головоломка на финском языке: соединяйте буквы на круге, составляйте финские слова и заполняйте кроссворд. 1000 уровней в 50 главах, карточка с переводом на русский для каждого слова. Работает без интернета.
 
-<!-- PLACEHOLDER store badges: add RuStore / Yandex Games links when the listings are live -->
+<!-- PLACEHOLDER: Yandex Games when live -->
 <a href="https://play.google.com/store/apps/details?id=ru.pirogovlab.sanamaailma"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png" height="72" alt="Доступно в Google Play"></a>
+<a href="https://www.rustore.ru/catalog/app/ru.pirogovlab.sanamaailma"><img src="https://img.shields.io/badge/RuStore-скачать-0077ff?logo=android&logoColor=white&labelColor=0077ff&color=ffffff" height="40" alt="Скачать в RuStore"></a>
 
 **Играть в браузере:** https://pirogovlab.ru/sanamaailma/ · **Страница игры:** https://pirogovlab.ru/sanamaailma-igra/ · **Скачать APK:** https://pirogovlab.ru/sanamaailma/sanamaailma.apk
 

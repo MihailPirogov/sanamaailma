@@ -14,6 +14,8 @@ MEN = ['January','February','March','April','May','June','July','August','Septem
 DRU = f'{int(D)} {MRU} {Y}'; DEN = f'{MEN} {int(D)}, {Y}'
 dt = datetime.date(int(Y), int(M), int(D)); RFC = dt.strftime('%a, %d %b %Y') + ' 15:00:00 +0300'
 SLUG = f'{DATE}-sanamaailma'; VER = '1.0.0'
+RSURL = 'https://www.rustore.ru/catalog/app/ru.pirogovlab.sanamaailma'
+GPURL = 'https://play.google.com/store/apps/details?id=ru.pirogovlab.sanamaailma'
 APK = '/sanamaailma/sanamaailma.apk'; SIZE_RU = '26 МБ'; SIZE_EN = '26 MB'
 GAME = '/sanamaailma/'; PRIV = '/sanamaailma/privacy/'
 RU_P = 'https://pirogovlab.ru/sanamaailma-igra/'; EN_P = 'https://pirogovlab.ru/en/sanamaailma-igra/'
@@ -43,9 +45,9 @@ def head(s, title, desc, canon, ogt, ogd, ogimg, ru, en):
 GP_SVG = '<svg viewBox="0 0 24 26" aria-hidden="true" width="26" height="28"><path fill="#00d7fe" d="M1 .6 13.4 13 1 25.4C.6 25.2.4 24.7.4 24.1V1.9C.4 1.3.6.8 1 .6z"/><path fill="#ffce00" d="m17.5 8.9 4.3 2.4c1.3.8 1.3 2 0 2.8l-4.3 2.4L13.4 13z"/><path fill="#ff3a44" d="M17.5 17.1 13.4 13 1 25.4c.5.4 1.2.4 2 0z"/><path fill="#00f076" d="M17.5 8.9 3 .6C2.2.2 1.5.2 1 .6L13.4 13z"/></svg>'
 def stores(lang):
     t = (lambda ru, en: ru if lang == 'ru' else en)
-    return ('<!-- PLACEHOLDER stores: set href and remove "hidden" when each listing is live -->\n      <div class="stores-row">'
-      f'<a class="store rs" href="#rustore" rel="noopener" hidden><i>R</i><span><small>{t("Скачать в","Get it on")}</small><b>RuStore</b></span></a>'
-      f'<a class="store gp" href="#google-play" rel="noopener" hidden>{GP_SVG}<span><small>{t("Доступно в","Get it on")}</small><b>Google Play</b></span></a>'
+    return ('<!-- stores: RuStore and Google Play are live; PLACEHOLDER Yandex Games — set href and remove "hidden" when live -->\n      <div class="stores-row">'
+      f'<a class="store rs" href="{RSURL}" target="_blank" rel="noopener"><i>R</i><span><small>{t("Скачать в","Get it on")}</small><b>RuStore</b></span></a>'
+      f'<a class="store gp" href="{GPURL}" target="_blank" rel="noopener">{GP_SVG}<span><small>{t("Доступно в","Get it on")}</small><b>Google Play</b></span></a>'
       f'<a class="store yg" href="#yandex-games" rel="noopener" hidden><i>Я</i><span><small>{t("Играть в","Play on")}</small><b>{t("Яндекс Играх","Yandex Games")}</b></span></a></div>')
 SH = {'ru': [('game','Кроссворд и круг с буквами'),('card','Карточка слова с переводом'),('map','Карта: 50 глав'),('daily','Задача дня'),('spin','Колесо удачи'),('home','Главный экран'),('tutorial','Обучение при первом запуске')],
       'en': [('game','Crossword and the letter wheel'),('card','Word card with translation'),('map','Map: 50 chapters'),('daily','Daily puzzle'),('spin','Fortune wheel'),('home','Home screen'),('tutorial','First-launch tutorial')]}
@@ -57,7 +59,7 @@ def landing(lang):
     assert 'class="tilt"' not in pre or True
     if lang == 'ru':
         pre = head(pre, 'Sanamaailma — словесная игра на финском языке | Pirogov Lab',
-          'Sanamaailma («Мир слов») — бесплатная словесная головоломка: составляйте финские слова из букв, 1000 уровней в 50 главах, перевод каждого слова на русский. Игра в браузере и на Android, скоро в RuStore, Google Play и Яндекс Играх.',
+          'Sanamaailma («Мир слов») — бесплатная словесная головоломка: составляйте финские слова из букв, 1000 уровней в 50 главах, перевод каждого слова на русский. Игра в Google Play, RuStore, в браузере и на Android; скоро в Яндекс Играх.',
           RU_P, 'Sanamaailma — словесная игра на финском языке', 'Соединяйте буквы, составляйте финские слова и заполняйте кроссворд. 1000 уровней, карточки слов с переводом, задача дня и колесо удачи.', OG, RU_P, EN_P)
         pre = pre.replace('<span class="crumb">Сүз дөньясы</span>', '<span class="crumb">Sanamaailma</span>').replace('/suz-donyasy-igra/', '/sanamaailma-igra/')
         main = f'''<main class="wrap">
@@ -85,7 +87,7 @@ def landing(lang):
   <section aria-labelledby="s"><h2 id="s">Скриншоты</h2><figure class="shot" style="margin-bottom:1.5rem"><img src="{IMG}feature-graphic.webp" width="1024" height="500" loading="lazy" alt="Sanamaailma — мир финских слов"></figure>
   {gal('ru')}
   <div class="wide"><figure class="shot"><img src="{IMG}desktop-game.webp" width="1280" height="720" loading="lazy" alt="Версия для компьютера"><figcaption>В браузере на компьютере</figcaption></figure><figure class="shot"><img src="{IMG}desktop-card.webp" width="1280" height="720" loading="lazy" alt="Карточка слова на компьютере"><figcaption>Карточка слова</figcaption></figure></div></section>
-  <section aria-labelledby="i"><h2 id="i">Где играть</h2><div class="card"><p style="margin:0">Прямо сейчас — <a href="{GAME}">в браузере</a> на телефоне или компьютере (прогресс сохраняется на устройстве) или на Android: скачайте <a href="{APK}" download>sanamaailma.apk</a> ({VER}, {SIZE_RU}), откройте файл и разрешите установку из этого источника. Скоро Sanamaailma появится в RuStore, Google Play и Яндекс Играх.</p></div></section>
+  <section aria-labelledby="i"><h2 id="i">Где играть</h2><div class="card"><p style="margin:0">Прямо сейчас — <a href="{GAME}">в браузере</a> на телефоне или компьютере (прогресс сохраняется на устройстве) или на Android: скачайте <a href="{APK}" download>sanamaailma.apk</a> ({VER}, {SIZE_RU}), откройте файл и разрешите установку из этого источника. Sanamaailma уже в Google Play и RuStore; скоро появится в Яндекс Играх.</p></div></section>
   <section aria-labelledby="src"><h2 id="src">Словарь</h2><div class="card"><ul class="src" style="padding-left:1.2rem;margin:0"><li>Слова, переводы и примеры — финские статьи <a href="https://ru.wiktionary.org" target="_blank" rel="noopener">Викисловаря</a> (CC BY-SA 4.0; данные Wiktextract / kaikki.org)</li><li>Частоты слов — FrequencyWords (OpenSubtitles) и wordfreq (CC BY-SA 4.0)</li></ul>
   <p class="note">В мобильных версиях есть ненавязчивая реклама (после обучения, между уровнями и по желанию — за подсказку). <a href="{PRIV}">Политика конфиденциальности</a>.</p></div></section>
   <aside class="callout" role="note" style="margin-top:3rem"><div class="callout-ico" aria-hidden="true">✦</div><p><b>Kiitos!</b> · Проект лаборатории <a href="https://pirogovlab.ru">PirogovLab</a>. Нашли ошибку в слове или переводе? Напишите в <a href="/contacts/">Telegram</a>.</p></aside>
@@ -94,7 +96,7 @@ def landing(lang):
         wr('sanamaailma-igra/index.html', pre + main + post)
     else:
         pre = head(pre, 'Sanamaailma — a word game in the Finnish language | Pirogov Lab',
-          'Sanamaailma (“World of Words”) is a free word puzzle: build Finnish words from letters, 1000 levels in 50 chapters, a Russian translation for every word. Play in the browser or on Android; RuStore, Google Play and Yandex Games coming soon.',
+          'Sanamaailma (“World of Words”) is a free word puzzle: build Finnish words from letters, 1000 levels in 50 chapters, a Russian translation for every word. On Google Play and RuStore, in the browser or on Android; Yandex Games coming soon.',
           EN_P, 'Sanamaailma — a word game in the Finnish language', 'Connect letters, build Finnish words and fill the crossword. 1000 levels, word cards with translations, a daily puzzle and a fortune wheel.', OG, RU_P, EN_P)
         pre = pre.replace('<span class="crumb">Süz Dönyası</span>', '<span class="crumb">Sanamaailma</span>').replace('/suz-donyasy-igra/', '/sanamaailma-igra/')
         main = f'''<main class="wrap">
@@ -122,7 +124,7 @@ def landing(lang):
   <section aria-labelledby="s"><h2 id="s">Screenshots</h2><figure class="shot" style="margin-bottom:1.5rem"><img src="{IMG}feature-graphic.webp" width="1024" height="500" loading="lazy" alt="Sanamaailma"></figure>
   {gal('en')}
   <div class="wide"><figure class="shot"><img src="{IMG}desktop-game.webp" width="1280" height="720" loading="lazy" alt="Desktop browser version"><figcaption>In a desktop browser</figcaption></figure><figure class="shot"><img src="{IMG}desktop-card.webp" width="1280" height="720" loading="lazy" alt="A word card on desktop"><figcaption>A word card</figcaption></figure></div></section>
-  <section aria-labelledby="i"><h2 id="i">Where to play</h2><div class="card"><p style="margin:0">Right now: <a href="{GAME}" hreflang="ru">in the browser</a> on a phone or computer (progress is saved on the device), or on Android: download <a href="{APK}" download>sanamaailma.apk</a> ({VER}, {SIZE_EN}), open it and allow installs from this source. RuStore, Google Play and Yandex Games are coming soon.</p></div></section>
+  <section aria-labelledby="i"><h2 id="i">Where to play</h2><div class="card"><p style="margin:0">Right now: <a href="{GAME}" hreflang="ru">in the browser</a> on a phone or computer (progress is saved on the device), or on Android: download <a href="{APK}" download>sanamaailma.apk</a> ({VER}, {SIZE_EN}), open it and allow installs from this source. Already on Google Play and RuStore; Yandex Games coming soon.</p></div></section>
   <section aria-labelledby="src"><h2 id="src">Dictionary</h2><div class="card"><ul class="src" style="padding-left:1.2rem;margin:0"><li>Words, translations and examples: Finnish entries of the Russian <a href="https://ru.wiktionary.org" target="_blank" rel="noopener">Wiktionary</a> (CC BY-SA 4.0; Wiktextract / kaikki.org data)</li><li>Word frequencies: FrequencyWords (OpenSubtitles) and wordfreq (CC BY-SA 4.0)</li></ul>
   <p class="note">The mobile versions show unobtrusive ads (after the tutorial, between levels and, if you choose, for a hint). <a href="{PRIV}" hreflang="ru">Privacy policy</a>.</p></div></section>
   <aside class="callout" role="note" style="margin-top:3rem"><div class="callout-ico" aria-hidden="true">✦</div><p>A <a href="https://pirogovlab.ru/en/">PirogovLab</a> project. Found a mistake in a word or translation? Message me on <a href="/en/contacts/">Telegram</a>.</p></aside>
@@ -136,7 +138,7 @@ def blogpost(lang):
     ru_u = f'https://pirogovlab.ru/blog/{SLUG}/'; en_u = f'https://pirogovlab.ru/en/blog/{SLUG}/'; img = 'https://pirogovlab.ru/blog/media/sanamaailma.jpg'
     if lang == 'ru':
         T = '«Sanamaailma»: словесная игра на финском языке'
-        DS = 'Сделал «Sanamaailma» — словесную головоломку на финском: 1000 уровней, перевод каждого слова на русский, задача дня и колесо удачи. Играть можно в браузере и на Android, скоро — RuStore, Google Play и Яндекс Игры.'
+        DS = 'Сделал «Sanamaailma» — словесную головоломку на финском: 1000 уровней, перевод каждого слова на русский, задача дня и колесо удачи. Играть можно в браузере и на Android, уже в Google Play и RuStore; скоро — Яндекс Игры.'
         pre = head(pre, T + ' | Pirogov Lab', DS, ru_u, T, DS, img, ru_u, en_u)
         pre = pre.replace('/blog/2026-10-19-suz-donyasy/', f'/blog/{SLUG}/')
         main = f'''<main class="wrap">
@@ -155,7 +157,7 @@ def blogpost(lang):
 <li><b>Каждый день</b> — задача дня, слово дня, ежедневная награда, задания, колесо удачи и достижения.</li>
 <li>Подсказки, бонусные слова, короткое обучение при первом запуске. Работает <b>без интернета</b>.</li>
 </ul>
-<p>Слова и переводы взяты из открытого Викисловаря (CC BY-SA 4.0), порядок уровней — по частоте слов в живой речи: сначала sana, iso, suuri, потом посложнее. Играть можно <b>прямо в браузере</b> на телефоне и компьютере или на Android (APK), скоро Sanamaailma появится в RuStore, Google Play и Яндекс Играх.</p>
+<p>Слова и переводы взяты из открытого Викисловаря (CC BY-SA 4.0), порядок уровней — по частоте слов в живой речи: сначала sana, iso, suuri, потом посложнее. Играть можно <b>прямо в браузере</b> на телефоне и компьютере или на Android (APK). Sanamaailma уже в Google Play и RuStore; скоро — Яндекс Игры.</p>
 <p>Нашли ошибку в слове или переводе? Напишите мне в <a href="/contacts/">Telegram</a> — буду исправлять. Kiitos!</p>
   </div>
   <div class="stores"><a class="btn" href="{GAME}">▶ Играть в браузере</a></div>
@@ -167,7 +169,7 @@ def blogpost(lang):
         wr(f'blog/{SLUG}/index.html', pre + main + post)
     else:
         T = 'Sanamaailma: a word game in the Finnish language'
-        DS = 'I made Sanamaailma, a word puzzle in Finnish: 1000 levels, a Russian translation for every word, a daily puzzle and a fortune wheel. Play in the browser or on Android; RuStore, Google Play and Yandex Games coming soon.'
+        DS = 'I made Sanamaailma, a word puzzle in Finnish: 1000 levels, a Russian translation for every word, a daily puzzle and a fortune wheel. On Google Play and RuStore, in the browser or on Android; Yandex Games coming soon.'
         pre = head(pre, T + ' | Pirogov Lab', DS, en_u, T, DS, img, ru_u, en_u)
         pre = pre.replace('/blog/2026-10-19-suz-donyasy/', f'/blog/{SLUG}/')
         main = f'''<main class="wrap">
@@ -186,7 +188,7 @@ def blogpost(lang):
 <li><b>Every day</b>: a daily puzzle, a word of the day, a daily reward, quests, a fortune wheel and achievements.</li>
 <li>Hints, bonus words and a short tutorial on first launch. Works <b>offline</b>.</li>
 </ul>
-<p>Words and translations come from the open Wiktionary (CC BY-SA 4.0); levels follow word frequency in everyday speech. You can <b>play right in the browser</b> or on Android (APK) now; RuStore, Google Play and Yandex Games are coming soon. The interface is in Russian.</p>
+<p>Words and translations come from the open Wiktionary (CC BY-SA 4.0); levels follow word frequency in everyday speech. You can <b>play right in the browser</b> or on Android (APK). Already on Google Play and RuStore; Yandex Games coming soon. The interface is in Russian.</p>
 <p>Found a mistake in a word or translation? Message me on <a href="/en/contacts/">Telegram</a>. Kiitos!</p>
   </div>
   <div class="stores"><a class="btn" href="{GAME}" hreflang="ru">▶ Play in the browser</a></div>
@@ -221,7 +223,7 @@ def blog_idx(lang):
     <time class="date" datetime="{DATE}T15:00:00+03:00">{DRU}</time>
     <h2><a href="/blog/{SLUG}/">«Sanamaailma»: словесная игра на финском языке</a></h2>
     <figure class="media"><img src="/blog/media/sanamaailma.jpg" width="1200" height="630" alt="Sanamaailma — мир финских слов" loading="lazy"></figure>
-    <p>Словесная головоломка на финском: соединяйте буквы, составляйте слова и заполняйте кроссворд. 1000 уровней в 50 главах, перевод каждого слова на русский, задача дня и колесо удачи. Играть можно в браузере и на Android, скоро — RuStore, Google Play и Яндекс Игры.</p>
+    <p>Словесная головоломка на финском: соединяйте буквы, составляйте слова и заполняйте кроссворд. 1000 уровней в 50 главах, перевод каждого слова на русский, задача дня и колесо удачи. Играть можно в браузере и на Android, уже в Google Play и RuStore; скоро — Яндекс Игры.</p>
     <a class="more" href="/blog/{SLUG}/">Читать полностью →</a>
   </article>
 '''
@@ -230,7 +232,7 @@ def blog_idx(lang):
     <time class="date" datetime="{DATE}T15:00:00+03:00">{DEN}</time>
     <h2><a href="/en/blog/{SLUG}/">Sanamaailma: a word game in the Finnish language</a></h2>
     <figure class="media"><img src="/blog/media/sanamaailma.jpg" width="1200" height="630" alt="Sanamaailma — the world of Finnish words" loading="lazy"></figure>
-    <p>A word puzzle in Finnish: connect letters, build words and fill the crossword. 1000 levels in 50 chapters, a Russian translation for every word, a daily puzzle and a fortune wheel. Play in the browser or on Android; RuStore, Google Play and Yandex Games coming soon.</p>
+    <p>A word puzzle in Finnish: connect letters, build words and fill the crossword. 1000 levels in 50 chapters, a Russian translation for every word, a daily puzzle and a fortune wheel. On Google Play and RuStore, in the browser or on Android; Yandex Games coming soon.</p>
     <a class="more" href="/en/blog/{SLUG}/">Read more →</a>
   </article>
 '''
